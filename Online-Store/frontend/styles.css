@@ -5,7 +5,7 @@ body {
   }
   
   header {
-    background-color: #003366;
+    background-color: #753fbd;
     color: #fff;
     padding: 1rem;
     display: flex;
@@ -85,8 +85,38 @@ body {
     font-size: 1.5rem;
     cursor: pointer;
   }
+
+  .logo {
+    max-height: 80px; 
+    margin-right: 1rem; 
+  }
   
-  /* Responsive Anpassungen */
+#search-sort {
+  display: flex;
+  flex-direction: column; 
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+
+#search-sort input[type="text"] {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  box-sizing: border-box; 
+}
+
+@media (min-width: 768px) {
+  #search-sort {
+    flex-direction: row;
+    align-items: center;
+  }
+  #search-sort input[type="text"] {
+    flex: 1;            /* Nimmt den verfügbaren Platz ein */
+    margin-right: 1rem; /* Abstand zum Select-Element */
+  }
+}
+
   @media (max-width: 768px) {
     .laptop-item {
       width: calc(50% - 2rem);
