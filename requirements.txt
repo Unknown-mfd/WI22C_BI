@@ -4,4 +4,3 @@ matplotlib
 mariadb
 python-dotenv
 SQLAlchemy
-mariadb-connector-python
