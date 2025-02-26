@@ -23,7 +23,7 @@ def run_webserver():
         httpd.serve_forever()
 
 def run_additional_scripts():
-    scripts = ["amazon-scrapper.py", "google-scrapper.py", "idealo-scrapper.py"]
+    scripts = ["Scrapper/amazon.py", "Scrapper/google-trends.py", "Scrapper/idealo.py"]
     threads = []
     for script in scripts:
         thread = threading.Thread(target=subprocess.run, args=([sys.executable, script],), kwargs={"check": True}, daemon=True)
