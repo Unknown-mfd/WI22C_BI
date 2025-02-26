@@ -13,15 +13,6 @@ def install_requirements():
 def run_streamlit():
     subprocess.run([sys.executable, "-m", "streamlit", "run", "dashboard.py"], check=True)
 
-def run_webserver():
-    import http.server
-    import socketserver
-    PORT = 8000
-    Handler = http.server.SimpleHTTPRequestHandler
-    with socketserver.TCPServer(("", PORT), Handler) as httpd:
-        print(f"Webserver läuft auf http://localhost:{PORT}")
-        httpd.serve_forever()
-
 def run_additional_scripts():
     scripts = ["Scrapper/amazon.py", "Scrapper/google-trends.py", "Scrapper/idealo.py"]
     threads = []
@@ -41,5 +32,3 @@ if __name__ == "__main__":
     # Starten von zusätzlichen Skripten in separaten Threads
     run_additional_scripts()
 
-    # Webserver starten
-    run_webserver()
