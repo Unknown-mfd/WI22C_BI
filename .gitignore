@@ -1,3 +1,4 @@
 .env
 .vscode
 Dashboard/__pycache__
+Online-Store/backend/node_modules

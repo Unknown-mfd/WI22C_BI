@@ -1,18 +1,72 @@
 // Beispiel-Daten: In einer echten Anwendung würden diese per API abgerufen
-const laptops = [
-    { id: 1, name: "Laptop A", description: "Leistungsstarker Laptop", price: 500 },
-    { id: 2, name: "Laptop B", description: "Kompakter und leichter Laptop", price: 450 },
-    { id: 3, name: "Laptop C", description: "Budget-Option mit guter Performance", price: 400 },
-    { id: 4, name: "Laptop D", description: "Gaming-Laptop mit hoher Performance", price: 800 },
-    { id: 5, name: "Laptop E", description: "Ultrabook für den Business-Einsatz", price: 700 }
-  ];
-  
-  let cart = [];
-  let selectedLaptop = null;
-  
-  // Kopie der Laptop-Liste für Filterung und Sortierung
-  let filteredLaptops = [...laptops];
-  
+let laptops = [];
+let cart = [];
+let selectedLaptop = null;
+let filteredLaptops = [];
+
+// Laptops von der API laden
+async function fetchLaptops() {
+    try {
+        const response = await fetch("http://localhost:5000/api/laptops");
+        laptops = await response.json();
+        filteredLaptops = [...laptops];
+        renderLaptopList();
+    } catch (error) {
+        console.error("Fehler beim Abrufen der Laptops:", error);
+    }
+}
+
+// Laptop-Detail von API holen
+async function fetchLaptopDetails(id) {
+    try {
+        const response = await fetch(`http://localhost:5000/api/laptop/${id}`);
+        selectedLaptop = await response.json();
+
+        document.getElementById("detail-title").innerText = selectedLaptop.name;
+        document.getElementById("detail-description").innerText = selectedLaptop.spezifikationen;
+        document.getElementById("detail-price").innerText = `Preis: ${selectedLaptop.preis}€`;
+        document.getElementById("laptop-detail").style.display = "flex";
+    } catch (error) {
+        console.error("Fehler beim Abrufen der Laptop-Details:", error);
+    }
+}
+
+// Detailansicht anzeigen (angepasst)
+function showDetail(id) {
+    fetchLaptopDetails(id);
+}
+
+// Bestellung an API senden
+async function purchaseOrder() {
+    if (cart.length === 0) {
+        alert("Ihr Warenkorb ist leer!");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:5000/api/order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cart }),
+        });
+
+        const result = await response.json();
+        document.getElementById("order-info").innerHTML = `
+            <p>Bestellnummer: ${result.orderId}</p>
+            <p>Gesamtbetrag: ${cart.reduce((sum, item) => sum + item.price, 0)}€</p>
+        `;
+        document.getElementById("order-confirmation").style.display = "flex";
+
+        cart = [];
+        renderCart();
+    } catch (error) {
+        console.error("Fehler bei der Bestellung:", error);
+    }
+}
+
+  // Initiale Daten laden
+  fetchLaptops();
+
   // Initiale Darstellung der Laptop-Liste
   function renderLaptopList() {
     const listContainer = document.getElementById("laptop-list");
